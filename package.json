@@ -1,0 +1,32 @@
+{
+  "name": "novarosaleswatcher",
+  "version": "1.0.0",
+  "description": "Script to watch changes in Zeny and Inventory of Nova RO Account during vending",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HavaH123/NovaROSalesWatcher.git"
+  },
+  "keywords": [
+    "NovaRO",
+    "Sales",
+    "Watcher",
+    "Vending",
+    "Ragnarok"
+  ],
+  "author": "HavaH",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HavaH123/NovaROSalesWatcher/issues"
+  },
+  "homepage": "https://github.com/HavaH123/NovaROSalesWatcher#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "nodemailer": "^4.0.1",
+    "underscore": "^1.8.3",
+    "webpage-watch": "^5.1.0"
+  }
+}

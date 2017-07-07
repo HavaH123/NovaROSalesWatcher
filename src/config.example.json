@@ -1,0 +1,7 @@
+{
+	"CHAR_ID": ["Array of CHAR IDs"],
+	"COOKIES": ["Array of cookies corresponding to the CHAR IDs"],
+	"GMAIL_USERNAME": "Email ID to notify with (Sender)",
+	"PASSWORD": "Password of the email id",
+	"GMAIL_SENDTO": "Email IDs to send notification to (Reciever)"
+}
