@@ -75,15 +75,17 @@ function extractInfo(htmlBody) {
 
 function intimate(oldItems, newItems) {
 	let message="";
-	let subject=`Nova RO - Item Sold by ${newItems.vendorName}!!!`;
+	let subject="";
 	if(oldItems === undefined) {
 		message = `Stared Monitoring! Current Zeny ${newItems.zeny.toLocaleString()}!`;	
 		subject=`Nova RO - Started Monitoring Vendor - ${newItems.vendorName}!!!`;
 	}
 	else if(newItems === undefined) {
+		subject = `Nova RO - Oops!!!`;
 		message = `Oops we got response as undefined. Something is wrong. Better have a look!`;
 	}
 	else {
+		subject=`Nova RO - Item Sold by ${newItems.vendorName}!!!`;
 		message = `Items Sold!!! Zeny Changed from ${oldItems.zeny.toLocaleString()} to ${newItems.zeny.toLocaleString()}. Gained ${(newItems.zeny-oldItems.zeny).toLocaleString()} Zeny!`;
 		
 
