@@ -73,18 +73,22 @@ function extractInfo(htmlBody) {
     }
 }
 
+let oldItemsCache;
+
 function intimate(oldItems, newItems) {
 	let message="";
 	let subject="";
-	if(oldItems === undefined) {
+	if(oldItems === undefined && oldItemsCache === undefined) {
 		message = `Stared Monitoring! Current Zeny ${newItems.zeny.toLocaleString()}!`;	
 		subject=`Nova RO - Started Monitoring Vendor - ${newItems.vendorName}!!!`;
 	}
 	else if(newItems === undefined) {
-		subject = `Nova RO - Oops!!!`;
-		message = `Oops we got response as undefined. Something is wrong. Better have a look!`;
+		oldItemsCache = oldItems;
 	}
 	else {
+		if(oldItems === undefined) {
+			oldItems = oldItemsCache;
+		}
 		subject=`Nova RO - Item Sold by ${newItems.vendorName}!!!`;
 		message = `Items Sold!!! Zeny Changed from ${oldItems.zeny.toLocaleString()} to ${newItems.zeny.toLocaleString()}. Gained ${(newItems.zeny-oldItems.zeny).toLocaleString()} Zeny!`;
 		
