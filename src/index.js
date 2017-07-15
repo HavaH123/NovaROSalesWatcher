@@ -5,21 +5,21 @@ let cheerio = require('cheerio');
 let _ = require('underscore');
 let nodemailer = require('nodemailer');
 let config = require('./config.json')
-
+let request = require('request');
 
 const CHAR_ID=config.CHAR_ID;
-const COOKIES=config.COOKIES;
+const CREDS=config.CREDS;
 const API_ENDPOINT=CHAR_ID.map(charId => 'https://www.novaragnarok.com/?module=character&action=view&id='+charId+'&preferred_server=NovaRO');
 
 
-const HEADERS = COOKIES.map(cookie => { 
+const HEADERS = CREDS.map(cred => { 
 	return {
 		'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
 		'Accept-Encoding': 'gzip, deflate, sdch, br',
 		'Accept-Language': 'en-IN,en-GB;q=0.8,en-US;q=0.6,en;q=0.4',
 		'Cache-Control': 'no-cache',
 		'Connection': 'keep-alive',
-		'Cookie': cookie,
+		'CRED': cred,
 		'Host': 'www.novaragnarok.com',
 		'Pragma': 'no-cache',
 		'Referer': 'https://www.novaragnarok.com/?module=account&action=view',
@@ -133,8 +133,29 @@ function intimate(oldItems, newItems) {
 	});
 }
 
+function loginNovaRo(username, password, cb) {
+	let loginUrl='https://www.novaragnarok.com/?module=account&action=login&return_url=';
+	request.post(loginUrl, {form:{server:'NovaRO', username: username, password: password}}, 
+	(err, response, body) => {
+		let requestCookie = response.headers["set-cookie"][0];
+		let fluxCookie;
+		if(requestCookie) {
+			fluxCookie = (requestCookie.match(/(fluxSessionData=.*?);/m)||[])[1];
+		}
+		return cb(fluxCookie);
+	});
+}
+
+function setRequestOpts(requestOpts, cb) {
+	let creds = requestOpts.headers.CRED;
+	loginNovaRo(creds.username, creds.password, (cookie) => {
+		requestOpts.headers.Cookie = cookie;
+		cb(requestOpts);
+	});
+}
+
 const WATCH_FREQUENCY = 60000;
 
 requestOpts.forEach(request => {
-	watchUrl({requestOpts: request, frequency: WATCH_FREQUENCY, extractInfo: extractInfo, callback: intimate});
+	watchUrl({requestOpts: request, frequency: WATCH_FREQUENCY, extractInfo: extractInfo, callback: intimate, setRequestOpts: setRequestOpts});
 });
